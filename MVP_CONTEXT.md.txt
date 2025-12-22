@@ -1,0 +1,44 @@
+# MVP CONTEXT – Textile Order Automation
+
+## Problem
+A textile B2B company captures orders manually when visiting customers.
+The process is slow, error-prone, and not automated.
+
+## Goal (MVP)
+While being at the customer:
+- enter order parameters in a UI
+- automatically generate:
+  1. Order overview PDF (customer-facing)
+  2. Production sheet PDF (internal)
+  3. Mockup sheet PDF (visual preview)
+
+## Core Principle
+- Single source of truth = JSON
+- Simple logic
+- Modular system
+- No ERP, no pricing, no authentication in MVP
+
+## User Journey
+Customer meeting → fill UI → submit → JSON → automation → PDFs
+
+## Tech Stack (MVP)
+Frontend: Next.js
+Backend: Node.js (Express)
+Database: Supabase (products only)
+Mockups: ComfyUI (fixed workflow)
+PDFs: HTML + CSS → Puppeteer
+
+## Scope Limits
+- 1–3 products only
+- One branding method (print)
+- Front mockup only
+- No user management
+- No invoicing
+
+## Folder Output
+/orders/{order-id}/
+- order.json
+- order_overview.pdf
+- production_sheet.pdf
+- mockup_front.png
+- mockups.pdf

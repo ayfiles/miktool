@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Textile Order Schema (MVP)",
+  "description": "Single source of truth for textile orders. Used to generate PDFs and mockups.",
+  "type": "object",
+  "required": ["orderId", "createdAt", "customer", "products"],
+  "properties": {
+    "orderId": {
+      "type": "string",
+      "description": "Unique order identifier",
+      "pattern": "^[a-zA-Z0-9-_]+$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when order was created"
+    },
+    "customer": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Customer company name"
+        },
+        "contactPerson": {
+          "type": "string",
+          "description": "Optional contact person name"
+        },
+        "address": {
+          "type": "string",
+          "description": "Optional customer address"
+        }
+      }
+    },
+    "products": {
+      "type": "array",
+      "description": "List of products (1–3 products in MVP)",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["productId", "color", "sizes", "branding"],
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "Product ID from product database"
+          },
+          "color": {
+            "type": "string",
+            "description": "Selected product color"
+          },
+          "sizes": {
+            "type": "object",
+            "description": "Size distribution for this product",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minProperties": 1
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Total quantity (optional, can be derived from sizes)"
+          },
+          "branding": {
+            "type": "object",
+            "required": ["method", "design", "position"],
+            "description": "Branding details (print only in MVP)",
+            "properties": {
+              "method": {
+                "type": "string",
+                "enum": ["print"],
+                "description": "Branding method (only 'print' in MVP)"
+              },
+              "design": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "Design file reference or path"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Optional design instructions"
+                  }
+                }
+              },
+              "position": {
+                "type": "string",
+                "enum": ["front"],
+                "description": "Print position (only 'front' in MVP)"
+              }
+            }
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional general order notes"
+    }
+  }
+}

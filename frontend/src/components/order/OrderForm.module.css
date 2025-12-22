@@ -1,0 +1,68 @@
+/* Wrapper */
+.wrapper {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 24px;
+  }
+  
+  /* Sections */
+  .section {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  
+  /* ITEMS LIST */
+  .itemsList {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* <<< DAS ist der wichtigste Fix */
+  }
+  
+  /* SINGLE ITEM CARD */
+  .itemRow {
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 14px; /* Abstand innerhalb eines Items */
+  }
+  
+  /* ITEM INFO (Selects etc.) */
+  .itemInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* ACTION ROW (- + Remove) */
+  .itemActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  /* Buttons */
+  .itemActions button {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Selects & Inputs */
+  .select,
+  .input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  
+  /* Primary CTA */
+  .primaryButton {
+    margin-top: 32px;
+  }
+  

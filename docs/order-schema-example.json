@@ -1,0 +1,44 @@
+{
+  "orderId": "ORD-2024-001",
+  "createdAt": "2024-01-15T14:30:00Z",
+  "customer": {
+    "name": "Textilhandel GmbH",
+    "contactPerson": "Max Mustermann",
+    "address": "Musterstraße 123, 12345 Musterstadt"
+  },
+  "products": [
+    {
+      "productId": "prod-tshirt-001",
+      "color": "Navy Blue",
+      "sizes": {
+        "L": 50
+      },
+      "quantity": 50,
+      "branding": {
+        "method": "print",
+        "position": "front",
+        "design": {
+          "file": "/designs/logo-2024.png",
+          "notes": "Logo should be centered, 10cm width"
+        }
+      }
+    },
+    {
+      "productId": "prod-hoodie-002",
+      "color": "Black",
+      "sizes": {
+        "XL": 30
+      },
+      "quantity": 30,
+      "branding": {
+        "method": "print",
+        "position": "front",
+        "design": {
+          "file": "/designs/logo-2024.png",
+          "notes": "Same logo as T-Shirt"
+        }
+      }
+    }
+  ],
+  "notes": "Rush order - delivery needed by end of month"
+}
