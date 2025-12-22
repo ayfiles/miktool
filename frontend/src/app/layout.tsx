@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import BackButton from "@/components/ui/BackButton"; // ✅ Importieren
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,6 +28,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* ✅ Hier wird der Button eingefügt */}
+        <BackButton />
+        
         {children}
       </body>
     </html>
