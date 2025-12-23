@@ -1,4 +1,4 @@
-"use client"; // Wir machen das Layout client-side für die Sidebar-Logik
+"use client";
 
 import { Geist, Geist_Mono } from "next/font/google";
 import { usePathname } from "next/navigation";
@@ -35,24 +35,38 @@ export default function RootLayout({
   const isLoginPage = pathname === "/login";
 
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}>
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
+      {/* Body Background: #171717 (Standard)
+         Overflow-hidden wichtig für das Inset-Layout 
+      */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground overflow-hidden`}>
         
         {isLoginPage ? (
-          // Login Seite: Einfach nur der Inhalt (keine Sidebar)
-          <main className="h-screen w-full flex items-center justify-center">
+          // ✅ UPDATE: Login Page hat jetzt explizit bg-[#0A0A0A]
+          <main className="min-h-screen w-full flex items-center justify-center overflow-y-auto bg-[#0A0A0A]">
              {children}
              <Toaster />
           </main>
         ) : (
-          // App Layout: Mit SidebarProvider
           <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
+            <AppSidebar variant="inset" />
+            
+            <SidebarInset 
+              className="
+                m-2 md:m-3
+                rounded-xl
+                bg-[#0A0A0A]                 /* Main Card im Dashboard auch #0A0A0A */
+                border border-border
+                shadow-sm
+                flex flex-col
+                overflow-hidden
+                h-[calc(100vh-1rem)]
+              "
+            >
               
-              {/* HEADER: Trigger & Breadcrumbs */}
-              <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-                <div className="flex items-center gap-2 px-4">
+              {/* HEADER */}
+              <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 bg-[#0A0A0A]">
+                <div className="flex items-center gap-2">
                   <SidebarTrigger className="-ml-1" />
                   <Separator orientation="vertical" className="mr-2 h-4" />
                   <Breadcrumb>
@@ -71,8 +85,8 @@ export default function RootLayout({
                 </div>
               </header>
 
-              {/* MAIN CONTENT */}
-              <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+              {/* CONTENT AREA */}
+              <div className="flex-1 overflow-y-auto p-4 scroll-smooth">
                 {children}
               </div>
 

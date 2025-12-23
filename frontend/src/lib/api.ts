@@ -8,10 +8,6 @@ const API_BASE_URL = "http://localhost:3001";
    HELPER: FETCH WITH AUTH
    Holt den Token automatisch (Client & Server)
 ========================================= */
-/* =========================================
-   HELPER: FETCH WITH AUTH
-   Holt den Token automatisch (Client & Server)
-========================================= */
 async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   let token = "";
 
@@ -52,15 +48,12 @@ async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
     },
   });
 
-  // ✅ FIX: Bessere Fehlerbehandlung
   if (!res.ok) {
     let errorMessage = `Request failed: ${res.status}`;
     try {
-      // Versuch JSON zu parsen
       const errorData = await res.json();
       errorMessage = errorData.error || errorMessage;
     } catch {
-      // Falls kein JSON, versuche Text (z.B. bei 404 HTML)
       const text = await res.text();
       if (text) errorMessage = text;
     }
@@ -77,7 +70,7 @@ async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
 
 
 /* =========================================
-   API FUNCTIONS (Jetzt viel sauberer!)
+   API FUNCTIONS
 ========================================= */
 
 /* --- PRODUCTS --- */
@@ -85,8 +78,23 @@ export async function getProducts(): Promise<Product[]> {
   return fetchWithAuth("/products", { cache: "no-store" });
 }
 
+// ✅ NEU: Produkt erstellen
+export async function createProduct(payload: Omit<Product, "id">): Promise<Product> {
+  return fetchWithAuth("/products", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// ✅ NEU: Produkt löschen
+export async function deleteProduct(productId: string) {
+  return fetchWithAuth(`/products/${productId}`, {
+    method: "DELETE",
+  });
+}
+
 /* --- CLIENTS --- */
-export async function getClients() {
+export async function getClients(): Promise<Client[]> {
   return fetchWithAuth("/clients", { cache: "no-store" });
 }
 
@@ -138,7 +146,6 @@ export async function getDashboardStats() {
 
 /* --- PDF DOWNLOAD --- */
 export async function downloadOrderPdf(orderId: string) {
-  // 1. Token holen (nur Client-seitig nötig für diesen Button)
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -146,10 +153,9 @@ export async function downloadOrderPdf(orderId: string) {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token || "";
 
-  // 2. Request mit Auth-Header
   const res = await fetch(`${API_BASE_URL}/orders/${orderId}/pdf`, {
     headers: {
-      "Authorization": `Bearer ${token}`, // 🔑 Hier ist der Ausweis
+      "Authorization": `Bearer ${token}`,
     },
   });
 
@@ -157,6 +163,5 @@ export async function downloadOrderPdf(orderId: string) {
     throw new Error("Failed to download PDF");
   }
 
-  // 3. WICHTIG: Wir geben einen Blob (Datei) zurück, kein JSON
   return res.blob();
 }

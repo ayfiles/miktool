@@ -57,6 +57,9 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {/* Dank der neuen globals.css ist <Card> jetzt automatisch 
+         im korrekten Grau (Zinc-900) und der Hintergrund der Seite schwarz (Zinc-950).
+      */}
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login to your account</CardTitle>

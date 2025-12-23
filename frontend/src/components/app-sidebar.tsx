@@ -4,21 +4,16 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { createBrowserClient } from "@supabase/ssr"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
   Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
   Settings2,
   SquareTerminal,
   Users,
-  Box,
-  FileText,
   LogOut,
-  Plus
+  Package,        // Icon für Products
+  Layers,         // Icon für Production
+  ClipboardList,  // Icon für Orders
+  Box,            // Icon für Inventory
+  Bot             // Icon für Automation
 } from "lucide-react"
 
 import {
@@ -39,9 +34,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
-// Das sind deine Haupt-Links
+// ✅ NEUE STRUKTUR: Operations, Resources, System
 const data = {
   user: {
     name: "Miktool User",
@@ -57,33 +52,63 @@ const data = {
   ],
   navMain: [
     {
-      title: "Production",
-      url: "/",
+      title: "Operations",
+      url: "#",
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
           title: "Dashboard",
           url: "/",
+          icon: SquareTerminal,
         },
         {
-          title: "New Order",
-          url: "/orders/new", 
+          title: "Orders",
+          url: "/orders",
+          icon: ClipboardList,
+        },
+        {
+          title: "Production",
+          url: "/production",
+          icon: Layers,
         },
       ],
     },
     {
-      title: "Management",
-      url: "/clients",
-      icon: Users,
+      title: "Resources",
+      url: "#",
+      icon: Package,
       items: [
         {
-          title: "Clients",
-          url: "/clients",
+          title: "Products", // 🌟 Die neue Seite!
+          url: "/products",
+          icon: Package,
         },
         {
           title: "Inventory", 
-          url: "#",
+          url: "/inventory",
+          icon: Box,
+        },
+        {
+          title: "Clients",
+          url: "/clients",
+          icon: Users,
+        },
+      ],
+    },
+    {
+      title: "System",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "Automation",
+          url: "/automation",
+          icon: Bot,
+        },
+        {
+          title: "Settings", 
+          url: "/settings",
+          icon: Settings2,
         },
       ],
     },
@@ -124,37 +149,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       
       <SidebarContent>
-        {/* Hauptnavigation */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarMenu>
-            {data.navMain.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild tooltip={item.title}>
-                  <a href={item.url}>
-                    {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton> {/* ✅ KORRIGIERT: Vorher stand hier </SidebarMenuItem> */}
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-
-        {/* Schnellzugriff (Optional) */}
-        <SidebarGroup className="mt-auto">
-            <SidebarGroupLabel>Quick Actions</SidebarGroupLabel>
+        {/* ✅ Hier rendern wir jetzt Gruppen (Operations, Resources, System) */}
+        {data.navMain.map((group) => (
+          <SidebarGroup key={group.title}>
+            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                        <a href="/clients">
-                            <Plus />
-                            <span>New Client</span>
-                        </a>
-                    </SidebarMenuButton>
+              {group.items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <a href={item.url}>
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
+              ))}
             </SidebarMenu>
-        </SidebarGroup>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter>
@@ -165,6 +177,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuButton
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  suppressHydrationWarning 
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarFallback className="rounded-lg">MK</AvatarFallback>

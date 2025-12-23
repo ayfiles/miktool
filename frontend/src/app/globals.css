@@ -8,7 +8,6 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* ✅ HIER PASSIERT DIE MAGIE: Wir mappen die Variablen zu Tailwind-Farben */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   
@@ -41,7 +40,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
   
-  /* Sidebar Colors (Wichtig für das Dashboard Layout) */
   --color-sidebar: hsl(var(--sidebar-background));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-primary: hsl(var(--sidebar-primary));
@@ -52,10 +50,8 @@
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 }
 
-/* Hier definieren wir die Werte (HSL Channels).
-  Tailwind v4 braucht diese Trennung von Definition (:root) und Mapping (@theme).
-*/
 :root {
+  /* LIGHT MODE Defaults */
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
   --card: 0 0% 100%;
@@ -74,10 +70,9 @@
   --destructive-foreground: 0 0% 98%;
   --border: 240 5.9% 90%;
   --input: 240 5.9% 90%;
-  --ring: 240 5.9% 10%;
+  --ring: 240 10% 3.9%;
   --radius: 0.5rem;
   
-  /* Sidebar Light Mode */
   --sidebar-background: 0 0% 98%;
   --sidebar-foreground: 240 5.3% 26.1%;
   --sidebar-primary: 240 5.9% 10%;
@@ -89,15 +84,15 @@
 }
 
 .dark {
-  /* Tiefschwarzer Hintergrund wie im Bild */
-  --background: 240 10% 3.9%; 
+  /* ✅ UPDATE: Background ist jetzt #171717 (0 0% 9%) */
+  --background: 0 0% 9%; 
   --foreground: 0 0% 98%;
 
-  /* ✅ WICHTIG: Cards sind jetzt heller (Zinc-900), damit sie sich abheben */
-  --card: 240 5.9% 10%; 
+  /* Cards bleiben etwas heller (Zinc-900), für den Kontrast */
+  --card: 240 3.7% 15.9%; 
   --card-foreground: 0 0% 98%;
 
-  --popover: 240 5.9% 10%;
+  --popover: 240 3.7% 15.9%;
   --popover-foreground: 0 0% 98%;
 
   --primary: 0 0% 98%;
@@ -119,8 +114,8 @@
   --input: 240 3.7% 15.9%;
   --ring: 240 4.9% 83.9%;
   
-  /* Sidebar Dark Mode - passt sich dem dunklen Theme an */
-  --sidebar-background: 240 10% 3.9%;
+  /* ✅ UPDATE: Sidebar matcht jetzt den neuen Background #171717 */
+  --sidebar-background: 0 0% 9%;
   --sidebar-foreground: 240 4.8% 95.9%;
   --sidebar-primary: 224.3 76.3% 48%;
   --sidebar-primary-foreground: 0 0% 100%;
@@ -130,15 +125,11 @@
   --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-/* Statt @apply nutzen wir hier direkt CSS Variablen.
-  Das ist robuster in v4 und verhindert den "unknown utility class" Fehler.
-*/
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
 
-/* Scrollbar Tweaks */
 ::-webkit-scrollbar {
   width: 8px;
 }
