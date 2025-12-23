@@ -69,3 +69,43 @@ export async function createProduct(productData: {
 
   return data;
 }
+
+// backend/services/productService.ts
+
+// ... bestehende Imports und Funktionen ...
+
+export async function updateProduct(id: string, updates: Partial<{
+  name: string;
+  category: string;
+  description: string;
+  available_colors: string[];
+  available_sizes: string[];
+}>) {
+  const { data, error } = await supabase
+    .from("products")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("❌ SUPABASE ERROR (update product):", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function deleteProduct(id: string) {
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("❌ SUPABASE ERROR (delete product):", error);
+    throw error;
+  }
+
+  return true;
+}

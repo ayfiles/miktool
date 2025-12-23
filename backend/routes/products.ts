@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { getAllProducts, getProductById, createProduct } from "../services/productService"; // Import createProduct
+import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from "../services/productService"; // Importe erweitern!
 
 const router = Router();
 
@@ -66,6 +66,34 @@ router.post("/", async (req: Request, res: Response) => {
     const e = error as any;
     console.error("Failed to create product:", e);
     res.status(500).json({ error: e.message || "Failed to create product" });
+  }
+});
+
+// PUT /products/:id (Update)
+router.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    
+    const updatedProduct = await updateProduct(id, updates);
+    res.json(updatedProduct);
+  } catch (error) {
+    const e = error as any;
+    console.error("Failed to update product:", e);
+    res.status(500).json({ error: e.message || "Failed to update product" });
+  }
+});
+
+// DELETE /products/:id (Löschen)
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await deleteProduct(id);
+    res.status(204).send(); // 204 No Content erfolgreich
+  } catch (error) {
+    const e = error as any;
+    console.error("Failed to delete product:", e);
+    res.status(500).json({ error: e.message || "Failed to delete product" });
   }
 });
 

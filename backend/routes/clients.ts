@@ -1,10 +1,6 @@
 import { Router } from "express";
 import { supabase } from "../supabaseClient";
-import {
-  getClients,
-  createClient,
-  deleteClient,
-} from "../services/clientService";
+import { getClients, createClient, deleteClient, updateClient } from "../services/clientService"; // <--- updateClient importieren
 
 const router = Router();
 
@@ -72,6 +68,26 @@ router.get("/:clientId/orders", async (req, res) => {
   );
 });
 
+
+/* -----------------------------
+   UPDATE client
+----------------------------- */
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  if (!name || typeof name !== "string") {
+    return res.status(400).json({ error: "Client name required" });
+  }
+
+  try {
+    const updated = await updateClient(id, name);
+    res.json(updated);
+  } catch (error: any) {
+    console.error("Failed to update client:", error);
+    res.status(500).json({ error: error.message || "Failed to update client" });
+  }
+});
 /* -----------------------------
    DELETE client (SAFE)
 ----------------------------- */

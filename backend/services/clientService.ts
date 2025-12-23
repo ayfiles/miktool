@@ -21,7 +21,21 @@ export async function createClient(name: string): Promise<Client> {
   if (error) throw error;
   return data as Client;
 }
+// ... UPDATE CLIENT
 
+export async function updateClient(id: string, name: string) {
+  const { data, error } = await supabase
+    .from("clients")
+    .update({ name })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+  return data as Client;
+}
 /* -----------------------------
    DELETE CLIENT (SAFE)
 ----------------------------- */

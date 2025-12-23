@@ -110,6 +110,12 @@ export async function deleteClient(clientId: string) {
     method: "DELETE",
   });
 }
+export async function updateClient(id: string, name: string): Promise<Client> {
+  return fetchWithAuth(`/clients/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ name }),
+  });
+}
 
 /* --- ORDERS --- */
 export async function getOrdersByClient(clientId: string) {
@@ -164,4 +170,12 @@ export async function downloadOrderPdf(orderId: string) {
   }
 
   return res.blob();
+}
+
+// ✅ NEU: Produkt aktualisieren
+export async function updateProduct(id: string, payload: Partial<Product>): Promise<Product> {
+  return fetchWithAuth(`/products/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
 }

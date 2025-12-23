@@ -4,15 +4,15 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Client } from "@/types/client";
-import { createClient, deleteClient } from "@/lib/api";
-import { toast } from "sonner"; // ✅ Toasts
-import { Search, Plus, Trash2, ArrowRight, Users } from "lucide-react";
+import { createClient } from "@/lib/api"; // deleteClient entfernt (passiert jetzt in ClientActions)
+import { toast } from "sonner";
+import { Search, Plus, Users } from "lucide-react"; // Icons bereinigt
 
 // Shadcn UI
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { ClientActions } from "./ClientActions";
 
 type Props = {
   initialClients: Client[];
@@ -56,26 +56,7 @@ export default function ClientsPage({ initialClients }: Props) {
     }
   }
 
-  /* --- Delete Client --- */
-  async function onDeleteClient(client: Client) {
-    // Einfacher Confirm (können wir später durch Dialog ersetzen)
-    const confirmed = window.confirm(
-      `⚠️ Delete client "${client.name}"?\n\nOrders associated with this client prevent deletion.`
-    );
-
-    if (!confirmed) return;
-
-    try {
-      await deleteClient(client.id);
-      setClients((prev) => prev.filter((c) => c.id !== client.id));
-      toast.success("Client deleted.");
-      router.refresh();
-    } catch (e: any) {
-      console.error(e);
-      // Hier wird jetzt der echte Fehler aus api.ts angezeigt (z.B. "Client has orders...")
-      toast.error(e.message || "Failed to delete client");
-    }
-  }
+  // onDeleteClient wurde entfernt, da die Logik jetzt in <ClientActions /> liegt.
 
   return (
     <div className="max-w-5xl mx-auto py-8 space-y-8 pb-20">
@@ -121,21 +102,9 @@ export default function ClientsPage({ initialClients }: Props) {
                     {c.name}
                   </Link>
 
-                  <div className="flex items-center gap-3 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Link href={`/clients/${c.id}`}>
-                      <Button variant="outline" size="sm" className="h-8 gap-2">
-                        Open <ArrowRight className="h-3 w-3" />
-                      </Button>
-                    </Link>
-                    
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 text-muted-foreground hover:text-red-400 hover:bg-red-400/10"
-                      onClick={() => onDeleteClient(c)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                  {/* Actions Menü (Ersetzt die alten Buttons) */}
+                  <div className="flex items-center gap-2">
+                    <ClientActions client={c} />
                   </div>
                 </div>
               ))
